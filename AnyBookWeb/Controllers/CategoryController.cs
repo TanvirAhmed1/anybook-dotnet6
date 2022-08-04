@@ -1,4 +1,5 @@
 ﻿using AnyBookWeb.Data;
+using AnyBookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnyBookWeb.Controllers
@@ -14,6 +15,22 @@ namespace AnyBookWeb.Controllers
         {
             var objCategoryList = _db.Categories.ToList();
             return View(objCategoryList);
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Category obj)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
+            _db.Categories.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

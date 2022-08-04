@@ -15,6 +15,10 @@ namespace AnyBookWeb.Data
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        //{
+
+        //}
         public DbSet<Category> Categories { get; set; }
     }
 }
