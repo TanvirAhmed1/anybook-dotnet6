@@ -1,7 +1,8 @@
-﻿using AnyBookWeb.Models;
+﻿using AnyBook.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace AnyBookWeb.Data
+namespace AnyBook.DataAccess
 {
     public class ApplicationDbContext :DbContext
     {
