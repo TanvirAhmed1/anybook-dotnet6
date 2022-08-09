@@ -1,4 +1,5 @@
 ﻿using AnyBook.DataAccess;
+using AnyBook.DataAccess.Repository.IRepository;
 using AnyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +7,14 @@ namespace AnyBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _db;
+        public CategoryController(ICategoryRepository db)
         {
             _db = db;
         }
         public IActionResult Index()
         {
-            var objCategoryList = _db.Categories.ToList();
+            var objCategoryList = _db.GetAll();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -28,8 +29,8 @@ namespace AnyBookWeb.Controllers
             {
                 return View(obj);
             }
-            _db.Categories.Add(obj);
-            _db.SaveChanges();
+            _db.Add(obj);
+            _db.Save();
             TempData["success"] = "Categpry Created Successfully";
             return RedirectToAction("Index");
         }
@@ -39,7 +40,7 @@ namespace AnyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var objCategory = _db.Categories.Find(id);
+            var objCategory = _db.GetFirstOrDefault(n=>n.Id==id);
             if (objCategory == null) return NotFound();
             return View(objCategory);
         }
@@ -51,8 +52,8 @@ namespace AnyBookWeb.Controllers
             {
                 return View(obj);
             }
-            _db.Categories.Update(obj);
-            _db.SaveChanges();
+            _db.Update(obj);
+            _db.Save();
             TempData["success"] = "Categpry Edited Successfully";
             return RedirectToAction("Index");
         }
@@ -62,7 +63,7 @@ namespace AnyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var objCategory = _db.Categories.Find(id);
+            var objCategory = _db.GetFirstOrDefault(n => n.Id == id);
             if (objCategory == null) return NotFound();
             return View(objCategory);
         }
@@ -70,13 +71,13 @@ namespace AnyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var obj = _db.Categories.Find(id);
+            var obj = _db.GetFirstOrDefault(n => n.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _db.Remove(obj);
+            _db.Save();
             TempData["success"] = "Categpry Deleted Successfully";
             return RedirectToAction("Index");
         }
