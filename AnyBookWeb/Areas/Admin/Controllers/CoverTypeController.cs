@@ -1,84 +1,83 @@
-﻿using AnyBook.DataAccess;
-using AnyBook.DataAccess.Repository.IRepository;
+﻿using AnyBook.DataAccess.Repository.IRepository;
 using AnyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnyBookWeb.Controllers
+namespace AnyBookWeb.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
+    [Area("Admin")]
+    public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CoverTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            var objCategoryList = _unitOfWork.Category.GetAll();
-            return View(objCategoryList);
+            var coverTypeList = _unitOfWork.CoverType.GetAll();
+            return View(coverTypeList);
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(CoverType covertype)
         {
             if (!ModelState.IsValid)
             {
-                return View(obj);
+                return View(covertype);
             }
-            _unitOfWork.Category.Add(obj);
+            _unitOfWork.CoverType.Add(covertype);
             _unitOfWork.Save();
-            TempData["success"] = "Categpry Created Successfully";
+            TempData["success"] = "Cover Type Created Successfully";
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            var objCategory = _unitOfWork.Category.GetFirstOrDefault(n=>n.Id==id);
+            var objCategory = _unitOfWork.CoverType.GetFirstOrDefault(n => n.Id == id);
             if (objCategory == null) return NotFound();
             return View(objCategory);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(CoverType obj)
         {
             if (!ModelState.IsValid)
             {
                 return View(obj);
             }
-            _unitOfWork.Category.Update(obj);
+            _unitOfWork.CoverType.Update(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Categpry Edited Successfully";
+            TempData["success"] = "Cover Type Edited Successfully";
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            var objCategory = _unitOfWork.Category.GetFirstOrDefault(n => n.Id == id);
+            var objCategory = _unitOfWork.CoverType.GetFirstOrDefault(n => n.Id == id);
             if (objCategory == null) return NotFound();
             return View(objCategory);
         }
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var obj = _unitOfWork.Category.GetFirstOrDefault(n => n.Id == id);
+            var obj = _unitOfWork.CoverType.GetFirstOrDefault(n => n.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.CoverType.Remove(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Categpry Deleted Successfully";
+            TempData["success"] = "Cover Type Deleted Successfully";
             return RedirectToAction("Index");
         }
     }
