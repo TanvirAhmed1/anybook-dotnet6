@@ -1,10 +1,11 @@
 ﻿using AnyBook.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AnyBook.DataAccess
 {
-    public class ApplicationDbContext :DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         protected readonly IConfiguration Configuration;
         public ApplicationDbContext(IConfiguration configuration)
@@ -15,6 +16,13 @@ namespace AnyBook.DataAccess
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            // Customize the ASP.NET Identity model and override the defaults if needed.
+            // For example, you can rename the ASP.NET Identity table names and more.
+            // Add your customizations after calling base.OnModelCreating(builder);
         }
         //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         //{
