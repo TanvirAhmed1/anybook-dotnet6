@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnyBook.DataAccess\AnyBook.DataAccess.csproj" />
+    <ProjectReference Include="..\AnyBook.Utility\AnyBook.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
